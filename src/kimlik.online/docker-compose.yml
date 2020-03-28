@@ -1,0 +1,66 @@
+version: '3.4'
+
+services:
+  gateway.reverseproxy:
+      build:
+        context: .
+        dockerfile: gateway/Dockerfile
+      container_name: gateway.reverseproxy
+      environment:
+            - SERVERNAME=gateway.reverseproxy
+      networks:
+          - "security-network"
+      depends_on:
+          - api
+      restart: always
+      ports:
+          - "80:80"
+          
+  gateway:
+      depends_on:
+          - gateway
+      image: nginx:alpine
+      networks:
+          - "security-network"
+      container_name: gateway
+      depends_on:
+          - api
+      environment:
+            - SERVERNAME=gateway.base
+            
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    depends_on:
+      - db
+    container_name: api 
+    environment:
+            - SERVERNAME=api 
+    networks:
+          - "security-network"
+
+  db:
+      image: postgres
+      environment:
+          POSTGRES_DB: db
+          POSTGRES_USER: lemoras
+          POSTGRES_PASSWORD: supersecret
+      volumes:
+          - db-data:/var/lib/postgresql/data
+      networks:
+          - "security-network"
+      container_name: db
+      restart: always      
+
+networks:
+  security-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    name: security_db-data
+    driver: local

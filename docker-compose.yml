@@ -1,0 +1,66 @@
+version: '3.4'
+
+services:
+  gateway.reverseproxy:
+      build:
+        context: .
+        dockerfile: gateway/Dockerfile
+      container_name: gateway.reverseproxy
+      environment:
+            - SERVERNAME=gateway.reverseproxy
+      networks:
+          - "online-network"
+      depends_on:
+          - kimlik.online
+      restart: always
+      ports:
+          - "80:80"
+          
+  gateway:
+      depends_on:
+          - gateway
+      image: nginx:alpine
+      networks:
+          - "online-network"
+      container_name: gateway
+      depends_on:
+          - kimlik.online
+      environment:
+            - SERVERNAME=gateway.base
+            
+  kimlik.online:
+    image: ${DOCKER_REGISTRY-}kimlik.online
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: .
+      dockerfile: src/kimlik.online/api/Dockerfile
+    depends_on:
+      - db
+    container_name: kimlik.online 
+    environment:
+            - SERVERNAME=kimlik.online 
+    networks:
+          - "online-network"
+
+  db:
+      image: postgres
+      environment:
+          POSTGRES_DB: db
+          POSTGRES_USER: lemoras
+          POSTGRES_PASSWORD: supersecret
+      volumes:
+          - db-data:/var/lib/postgresql/data
+      networks:
+          - "online-network"
+      container_name: db
+      restart: always      
+
+networks:
+  online-network:
+    driver: bridge
+
+volumes:
+  db-data:
+    name: online_db-data
+    driver: local
