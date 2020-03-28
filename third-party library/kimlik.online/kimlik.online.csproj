@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net451;netstandard1.1</TargetFrameworks>
+    <Version>1.0.0</Version>
+    <Authors>onuryasar.org</Authors>
+    <Company>lemoras.com</Company>
+    <Product>kimlik.online</Product>
+    <Description>kimlik.online integration library for your projects</Description>
+    <Copyright>onuryasar.org</Copyright>
+    <PackageIconUrl>http://onuryasar.org/logo.png</PackageIconUrl>
+  </PropertyGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>
