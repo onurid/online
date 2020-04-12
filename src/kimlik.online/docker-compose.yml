@@ -23,6 +23,7 @@ services:
       networks:
           - "security-network"
       container_name: gateway
+      restart: always
       depends_on:
           - api
       environment:
@@ -38,6 +39,7 @@ services:
     depends_on:
       - db
     container_name: api 
+    restart: always
     environment:
             - SERVERNAME=api 
     networks:
