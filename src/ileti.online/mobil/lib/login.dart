@@ -13,11 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sohbet Yasar',
+      title: 'ileti online',
       theme: ThemeData(
         primaryColor: themeColor,
       ),
-      home: LoginScreen(title: 'SOHBET YASAR'),
+      home: LoginScreen(title: 'ILETI ONLINE'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -125,7 +125,7 @@ var gh = {
 
 var postData = json.encode(gh);
 
-    final response = await http.post('http://kimlik.online/api/user/login', headers: {
+    final response = await http.post('http://192.168.2.10/api/user/login', headers: {
         HttpHeaders.contentTypeHeader: 'application/json'
       },body: postData);
 
@@ -194,14 +194,18 @@ var postData = json.encode(gh);
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'le',
+          text: 'lemoras',
           children: [
             TextSpan(
-              text: 'mo',
+              text: 'le',
+              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
+            ),
+            TextSpan(
+              text: 'mora',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'ras',
+              text: 's',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),

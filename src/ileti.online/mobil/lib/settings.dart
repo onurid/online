@@ -80,48 +80,48 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   Future uploadFile() async {
     String fileName = id;
-    StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
-    StorageUploadTask uploadTask = reference.putFile(avatarImageFile);
-    StorageTaskSnapshot storageTaskSnapshot;
-    uploadTask.onComplete.then((value) {
-      if (value.error == null) {
-        storageTaskSnapshot = value;
-        storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
-          photoUrl = downloadUrl;
-          Firestore.instance
-              .collection('users')
-              .document(id)
-              .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl}).then((data) async {
-            await prefs.setString('photoUrl', photoUrl);
-            setState(() {
-              isLoading = false;
-            });
-            Fluttertoast.showToast(msg: "Yükleme başarılı");
-          }).catchError((err) {
-            setState(() {
-              isLoading = false;
-            });
-            Fluttertoast.showToast(msg: err.toString());
-          });
-        }, onError: (err) {
-          setState(() {
-            isLoading = false;
-          });
-          Fluttertoast.showToast(msg: 'Bu dosya bir resim değildir');
-        });
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        Fluttertoast.showToast(msg: 'Bu dosya bir resim değildir');
-      }
-    }, onError: (err) {
-      setState(() {
-        isLoading = false;
-      });
-      Fluttertoast.showToast(msg: err.toString());
-    });
-  }
+    // StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
+    // StorageUploadTask uploadTask = reference.putFile(avatarImageFile);
+    // StorageTaskSnapshot storageTaskSnapshot;
+  //   uploadTask.onComplete.then((value) {
+  //     if (value.error == null) {
+  //       storageTaskSnapshot = value;
+  //       storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+  //         photoUrl = downloadUrl;
+  //         Firestore.instance
+  //             .collection('users')
+  //             .document(id)
+  //             .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl}).then((data) async {
+  //           await prefs.setString('photoUrl', photoUrl);
+  //           setState(() {
+  //             isLoading = false;
+  //           });
+  //           Fluttertoast.showToast(msg: "Yükleme başarılı");
+  //         }).catchError((err) {
+  //           setState(() {
+  //             isLoading = false;
+  //           });
+  //           Fluttertoast.showToast(msg: err.toString());
+  //         });
+  //       }, onError: (err) {
+  //         setState(() {
+  //           isLoading = false;
+  //         });
+  //         Fluttertoast.showToast(msg: 'Bu dosya bir resim değildir');
+  //       });
+  //     } else {
+  //       setState(() {
+  //         isLoading = false;
+  //       });
+  //       Fluttertoast.showToast(msg: 'Bu dosya bir resim değildir');
+  //     }
+  //   }, onError: (err) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     Fluttertoast.showToast(msg: err.toString());
+  //   });
+ }
 
   void handleUpdateData() {
     focusNodeNickname.unfocus();
@@ -131,26 +131,26 @@ class SettingsScreenState extends State<SettingsScreen> {
       isLoading = true;
     });
 
-    Firestore.instance
-        .collection('users')
-        .document(id)
-        .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl}).then((data) async {
-      await prefs.setString('nickname', nickname);
-      await prefs.setString('aboutMe', aboutMe);
-      await prefs.setString('photoUrl', photoUrl);
+    // // Firestore.instance
+    // //     .collection('users')
+    // //     .document(id)
+    // //     .updateData({'nickname': nickname, 'aboutMe': aboutMe, 'photoUrl': photoUrl}).then((data) async {
+    // //   await prefs.setString('nickname', nickname);
+    // //   await prefs.setString('aboutMe', aboutMe);
+    // //   await prefs.setString('photoUrl', photoUrl);
 
-      setState(() {
-        isLoading = false;
-      });
+    //   setState(() {
+    //     isLoading = false;
+    //   });
 
-      Fluttertoast.showToast(msg: "Update success");
-    }).catchError((err) {
-      setState(() {
-        isLoading = false;
-      });
+    //   Fluttertoast.showToast(msg: "Update success");
+    // }).catchError((err) {
+    //   setState(() {
+    //     isLoading = false;
+    //   });
 
-      Fluttertoast.showToast(msg: err.toString());
-    });
+    //   Fluttertoast.showToast(msg: err.toString());
+    // });
   }
 
   @override
