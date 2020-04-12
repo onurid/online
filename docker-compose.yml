@@ -25,6 +25,7 @@ services:
       container_name: gateway
       depends_on:
           - kimlik.online
+      restart: always
       environment:
             - SERVERNAME=gateway.base
             
@@ -38,6 +39,7 @@ services:
     depends_on:
       - db
     container_name: kimlik.online 
+    restart: always
     environment:
             - SERVERNAME=kimlik.online 
     networks:
