@@ -35,7 +35,7 @@ new Vue({
                         nickname: this.nickname,
                         type: 0,
                         IDFrom: '5',
-                        IDTo: '7', 
+                        IDTo: '7908', 
                         timestamp: new Date().getTime().toString(),
                         content: $('<p>').html(this.newMsg).text() // Strip out html
                     }

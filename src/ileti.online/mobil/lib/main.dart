@@ -342,7 +342,7 @@ class MainScreenState extends State<MainScreen> {
                  context,
                  MaterialPageRoute(
                      builder: (context) => Chat(
-                           peerId: "7",//document["id"], // DocumentID
+                           peerId: "7908",//document["id"], // DocumentID
                            peerAvatar: document['photoUrl']                           
                          )));
            },

@@ -620,16 +620,24 @@ int docNo = 0;
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Center( 
-                      child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)));
-                } else {
-                  var parsedJson = json.decode(snapshot.data); 
+                      //child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)));
+                  );} else {
+                  Map<String, dynamic> parsedJson = json.decode(snapshot.data); 
                   if (listMessage == null)
                         listMessage = new List<dynamic>();
-                  listMessage.add(parsedJson);
+                        
+                  if (listMessage.length != 0) {
+                  var lastData = listMessage.last;                   
+                      if (int.parse(lastData['timestamp']) != int.parse(parsedJson['timestamp']))
+                            listMessage.add(parsedJson);
+                  }
+                  else 
+                    listMessage.add(parsedJson);
+ 
                   //return buildItem(1, parsedJson);
-                  return ListView.builder(
+                  return ListView.builder( 
                     padding: EdgeInsets.all(10.0),
-                    itemBuilder: (context, index) => buildItem(index, listMessage[listMessage.length -1 - index]), //, snapshot.data.documents[index]
+                    itemBuilder: (context, index) => buildItem(index, listMessage[(listMessage.length -1) - index]), //, snapshot.data.documents[index]
                     itemCount: listMessage.length,
                     reverse: true,  
                     controller: listScrollController,
