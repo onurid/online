@@ -33,6 +33,10 @@ new Vue({
                     JSON.stringify({
                         email: this.email,
                         nickname: this.nickname,
+                        type: 0,
+                        IDFrom: '5',
+                        IDTo: '7', 
+                        timestamp: new Date().getTime().toString(),
                         content: $('<p>').html(this.newMsg).text() // Strip out html
                     }
                 ));

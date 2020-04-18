@@ -55,16 +55,50 @@ class Account {
    }
 }
 
+class UserAccount {
+  final int id;
+  final String createdAt;
+  final String updatedAt;
+  final String deletedAt;
+  final String email;
+  final String password;
+  final String token;
+
+  UserAccount({
+    this.id, 
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.email,
+    this.password,
+    this.token
+    });
+
+  factory UserAccount.fromJson(Map<String, dynamic> json) {
+    return UserAccount(
+      id: json['ID'],
+      createdAt: json['CreatedAt'],
+      updatedAt: json['UpdatedAt'],
+      deletedAt: json['DeletedAt'],
+      email: json['email'],
+      password: json['password'],
+      token: json['token']
+    );
+  }
+}
+
 class User {
   final String message;
   final bool status;
+  final UserAccount account;
 
-  User({this.message, this.status});
+  User({this.message, this.status, this.account});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       message: json['message'],
       status: json['status'],
+      account: UserAccount.fromJson(json['account'])
     );
   }
 }
@@ -79,7 +113,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final Account googleSignIn = Account();
+  final Account kimlikSignIn = Account();
 
   SharedPreferences prefs;
 
@@ -100,7 +134,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     prefs = await SharedPreferences.getInstance();
 
-    isLoggedIn = await googleSignIn.isSignedIn();
+    isLoggedIn = await kimlikSignIn.isSignedIn();
     if (isLoggedIn) {
       Navigator.push(
         context,
@@ -120,11 +154,11 @@ class LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
 
+var email = emailController.text.trim() + '@ileti.online';
 var gh = {
-      'email': emailController.text.trim(),
+      'email': email,
       'password': passwordController.text.trim()
     };
-
 var postData = json.encode(gh);
 
     final response = await http.post('http://192.168.2.10/api/user/login', headers: {
@@ -138,11 +172,10 @@ var postData = json.encode(gh);
     var user = User.fromJson(json.decode(response.body));
 
     if (user.status) {
-      
         // Write data to local
-        var currentUser = { 'id': 1 };
-        await prefs.setString('id', "1");
-        await prefs.setString('nickname', "displayName");
+        var currentUser = { 'id': user.account.id };
+        await prefs.setString('id', user.account.id.toString());
+        await prefs.setString('nickname', user.account.email);
         await prefs.setString('photoUrl', "photoUrl");
         await prefs.setString('aboutMe', "aboutMe");
 

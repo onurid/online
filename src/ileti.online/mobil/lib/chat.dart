@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -53,7 +54,7 @@ class ChatScreenState extends State<ChatScreen> {
   String peerAvatar;
   String id;
 
-  var listMessage;
+  List<dynamic> listMessage;
   String groupChatId;
   SharedPreferences prefs;
 
@@ -70,7 +71,7 @@ class ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     focusNode.addListener(onFocusChange);
-
+    
     groupChatId = '';
 
     isLoading = false;
@@ -145,13 +146,17 @@ class ChatScreenState extends State<ChatScreen> {
     // type: 0 = text, 1 = image, 2 = sticker
     if (content.trim() != '') {
       textEditingController.clear();
-      widget.channel.sink.add({
-         'nickname': id,
-         'email': peerId,
+      var jsonStr = json.encode({
+         'nickname': 'deneme',
+         'email': 'deneme@gmail.com',
+         'idFrom': id,
+         'idTo': peerId,
          'timestamp': DateTime.now().millisecondsSinceEpoch.toString(), 
          'content': content,
          'type': type
       });
+
+      widget.channel.sink.add(jsonStr);
 
       // widget.channel.sink.add({
       //   'idFrom': id,
@@ -166,7 +171,7 @@ class ChatScreenState extends State<ChatScreen> {
        Fluttertoast.showToast(msg: 'Gönderilecek birşey yok');
      }
   }
-
+ 
   Widget buildItem(int index, Map<String, dynamic> document) {
      if (document['idFrom'] == id) {
        // Right (my message)
@@ -605,7 +610,7 @@ class ChatScreenState extends State<ChatScreen> {
           border: new Border(top: new BorderSide(color: greyColor2, width: 0.5)), color: Colors.white),
     );
   }
-
+int docNo = 0;
   Widget buildListMessage() {
     return Flexible(
       child: groupChatId == ''
@@ -614,18 +619,22 @@ class ChatScreenState extends State<ChatScreen> {
               stream: widget.channel.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return Center( 
                       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)));
                 } else {
-                  //listMessage = snapshot.data.documents;
+                  var parsedJson = json.decode(snapshot.data); 
+                  if (listMessage == null)
+                        listMessage = new List<dynamic>();
+                  listMessage.add(parsedJson);
+                  //return buildItem(1, parsedJson);
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
-                    itemBuilder: (context, index) => buildItem(index, snapshot.data[index]), //, snapshot.data.documents[index]
-                    itemCount: snapshot.data.documents.length,
-                    reverse: true,
+                    itemBuilder: (context, index) => buildItem(index, listMessage[listMessage.length -1 - index]), //, snapshot.data.documents[index]
+                    itemCount: listMessage.length,
+                    reverse: true,  
                     controller: listScrollController,
                   );
-                }
+                 }
               },
             ),
     );

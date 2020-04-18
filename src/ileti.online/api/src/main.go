@@ -19,13 +19,12 @@ var upgrader = websocket.Upgrader{
 
 // Define our message object
 type Message struct {
-	Email    string `json:"email"`
-	Nickname string `json:"nickname"`
-	//Message  string `json:"message"`
-	//IDFrom    string `json:"idFrom"`
-	//IDTo      string `json:"idTo"`
+	Email     string `json:"email"`
+	Nickname  string `json:"nickname"`
+	IDFrom    string `json:"idFrom"`
+	IDTo      string `json:"idTo"`
 	Content   string `json:"content"`
-	Type      string `json:"type"`
+	Type      int    `json:"type"`
 	Timestamp string `json:"timestamp"`
 }
 

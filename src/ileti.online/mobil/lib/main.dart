@@ -41,7 +41,7 @@ class MainScreenState extends State<MainScreen> {
 
   final String currentUserId;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-  final Account googleSignIn = Account();
+  final Account kimlikSignIn = Account();
 
   bool isLoading = false;
   List<Choice> choices = const <Choice>[
@@ -187,8 +187,8 @@ class MainScreenState extends State<MainScreen> {
       isLoading = true;
     });
 
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
+    await kimlikSignIn.disconnect();
+    await kimlikSignIn.signOut();
 
     this.setState(() {
       isLoading = false;
@@ -342,7 +342,7 @@ class MainScreenState extends State<MainScreen> {
                  context,
                  MaterialPageRoute(
                      builder: (context) => Chat(
-                           peerId: "1",//document["id"], // DocumentID
+                           peerId: "7",//document["id"], // DocumentID
                            peerAvatar: document['photoUrl']                           
                          )));
            },
