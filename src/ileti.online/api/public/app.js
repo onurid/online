@@ -6,8 +6,8 @@ new Vue({
         newMsg: '', // Holds new messages to be sent to the server
         chatContent: '', // A running list of chat messages displayed on the screen
         email: null, // Email address used for grabbing an avatar
-        username: null, // Our username
-        joined: false // True if email and username have been filled in
+        nickname: null, // Our nickname
+        joined: false // True if email and nickname have been filled in
     },
 
     created: function() {
@@ -17,9 +17,9 @@ new Vue({
             var msg = JSON.parse(e.data);
             self.chatContent += '<div class="chip">'
                     + '<img src="' + self.gravatarURL(msg.email) + '">' // Avatar
-                    + msg.username
+                    + msg.nickname
                 + '</div>'
-                + emojione.toImage(msg.message) + '<br/>'; // Parse emojis
+                + emojione.toImage(msg.content) + '<br/>'; // Parse emojis
 
             var element = document.getElementById('chat-messages');
             element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
@@ -32,8 +32,8 @@ new Vue({
                 this.ws.send(
                     JSON.stringify({
                         email: this.email,
-                        username: this.username,
-                        message: $('<p>').html(this.newMsg).text() // Strip out html
+                        nickname: this.nickname,
+                        content: $('<p>').html(this.newMsg).text() // Strip out html
                     }
                 ));
                 this.newMsg = ''; // Reset newMsg
@@ -45,12 +45,12 @@ new Vue({
                 Materialize.toast('You must enter an email', 2000);
                 return
             }
-            if (!this.username) {
-                Materialize.toast('You must choose a username', 2000);
+            if (!this.nickname) {
+                Materialize.toast('You must choose a nickname', 2000);
                 return
             }
             this.email = $('<p>').html(this.email).text();
-            this.username = $('<p>').html(this.username).text();
+            this.nickname = $('<p>').html(this.nickname).text();
             this.joined = true;
         },
 

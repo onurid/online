@@ -145,7 +145,13 @@ class ChatScreenState extends State<ChatScreen> {
     // type: 0 = text, 1 = image, 2 = sticker
     if (content.trim() != '') {
       textEditingController.clear();
-      widget.channel.sink.add(content);
+      widget.channel.sink.add({
+         'nickname': id,
+         'email': peerId,
+         'timestamp': DateTime.now().millisecondsSinceEpoch.toString(), 
+         'content': content,
+         'type': type
+      });
 
       // widget.channel.sink.add({
       //   'idFrom': id,
@@ -611,7 +617,7 @@ class ChatScreenState extends State<ChatScreen> {
                   return Center(
                       child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)));
                 } else {
-                  listMessage = snapshot.data.documents;
+                  //listMessage = snapshot.data.documents;
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
                     itemBuilder: (context, index) => buildItem(index, snapshot.data[index]), //, snapshot.data.documents[index]
