@@ -10,12 +10,21 @@ import 'package:flutter_chat_demo/login.dart';
 import 'package:flutter_chat_demo/settings.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:web_socket_channel/io.dart';
 
 void main() => runApp(MyApp());
 
-
 class DocumentSnapshot {
-  
+    Stream<dynamic> get Get  async* {
+    Map<String, dynamic> regionData = 
+    {
+      'id': 0,
+      'nickname': 'Aile içi sohbet',
+      'aboutMe':'Aile içi güvenli sohbet platformu',
+      'photoUrl':'https://pbs.twimg.com/profile_images/1239521174356459520/czPuWwV__400x400.jpg'
+    };
+    yield regionData;
+  } 
 }
 
 class MainScreen extends StatefulWidget {
@@ -231,7 +240,7 @@ class MainScreenState extends State<MainScreen> {
             // List
             Container(
               child: StreamBuilder(
-                //stream:  Firestore.instance.collection('users').snapshots(),
+                stream:  new DocumentSnapshot().Get,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -242,8 +251,8 @@ class MainScreenState extends State<MainScreen> {
                   } else {
                     return ListView.builder(
                       padding: EdgeInsets.all(10.0),
-                      itemBuilder: (context, index) => buildItem(context),
-                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) => buildItem(context, snapshot.data),//snapshot.data[index]),
+                      itemCount: 1//snapshot.data.length,
                     );
                   }
                 },
@@ -268,82 +277,82 @@ class MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget buildItem(BuildContext context) {
-    //if (document['id'] == currentUserId) {
+  Widget buildItem(BuildContext context, Map<String, dynamic> document) {
+    if (document['id'] == currentUserId) {
       return Container();
-    // } else {
-    //   return Container(
-    //     child: FlatButton(
-    //       child: Row(
-    //         children: <Widget>[
-    //           Material(
-    //             child: document['photoUrl'] != null
-    //                 ? CachedNetworkImage(
-    //                     placeholder: (context, url) => Container(
-    //                       child: CircularProgressIndicator(
-    //                         strokeWidth: 1.0,
-    //                         valueColor: AlwaysStoppedAnimation<Color>(themeColor),
-    //                       ),
-    //                       width: 50.0,
-    //                       height: 50.0,
-    //                       padding: EdgeInsets.all(15.0),
-    //                     ),
-    //                     imageUrl: document['photoUrl'],
-    //                     width: 50.0,
-    //                     height: 50.0,
-    //                     fit: BoxFit.cover,
-    //                   )
-    //                 : Icon(
-    //                     Icons.account_circle,
-    //                     size: 50.0,
-    //                     color: greyColor,
-    //                   ),
-    //             borderRadius: BorderRadius.all(Radius.circular(25.0)),
-    //             clipBehavior: Clip.hardEdge,
-    //           ),
-    //           Flexible(
-    //             child: Container(
-    //               child: Column(
-    //                 children: <Widget>[
-    //                   Container(
-    //                     child: Text(
-    //                       'İsim: ${document['nickname']}',
-    //                       style: TextStyle(color: primaryColor),
-    //                     ),
-    //                     alignment: Alignment.centerLeft,
-    //                     margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-    //                   ),
-    //                   Container(
-    //                     child: Text(
-    //                       'Hakkında: ${document['aboutMe'] ?? 'Not available'}',
-    //                       style: TextStyle(color: primaryColor),
-    //                     ),
-    //                     alignment: Alignment.centerLeft,
-    //                     margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-    //                   )
-    //                 ],
-    //               ),
-    //               margin: EdgeInsets.only(left: 20.0),
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //       onPressed: () {
-    //         Navigator.push(
-    //             context,
-    //             MaterialPageRoute(
-    //                 builder: (context) => Chat(
-    //                       peerId: document.documentID,
-    //                       peerAvatar: document['photoUrl'],
-    //                     )));
-    //       },
-    //       color: greyColor2,
-    //       padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-    //     ),
-    //     margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
-    //   );
-    // }
+     } else {
+       return Container(
+         child: FlatButton(
+           child: Row(
+             children: <Widget>[
+               Material(
+                 child: document['photoUrl'] != null
+                     ? CachedNetworkImage(
+                         placeholder: (context, url) => Container(
+                           child: CircularProgressIndicator(
+                             strokeWidth: 1.0,
+                             valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+                           ),
+                           width: 50.0,
+                           height: 50.0,
+                           padding: EdgeInsets.all(15.0),
+                         ),
+                         imageUrl: document['photoUrl'],
+                         width: 50.0,
+                         height: 50.0,
+                         fit: BoxFit.cover,
+                       )
+                     : Icon(
+                         Icons.account_circle,
+                         size: 50.0,
+                         color: greyColor,
+                       ),
+                 borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                 clipBehavior: Clip.hardEdge,
+               ),
+               Flexible(
+                 child: Container(
+                   child: Column(
+                     children: <Widget>[
+                       Container(
+                         child: Text(
+                           'İsim: ${document['nickname']}',
+                           style: TextStyle(color: primaryColor),
+                         ),
+                         alignment: Alignment.centerLeft,
+                         margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                       ),
+                       Container(
+                         child: Text(
+                           'Hakkında: ${document['aboutMe'] ?? 'Not available'}',
+                           style: TextStyle(color: primaryColor),
+                         ),
+                         alignment: Alignment.centerLeft,
+                         margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                       )
+                     ],
+                   ),
+                   margin: EdgeInsets.only(left: 20.0),
+                 ),
+               ),
+             ],
+           ),
+           onPressed: () {
+             Navigator.push(
+                 context,
+                 MaterialPageRoute(
+                     builder: (context) => Chat(
+                           peerId: "1",//document["id"], // DocumentID
+                           peerAvatar: document['photoUrl']                           
+                         )));
+           },
+           color: greyColor2,
+           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+         ),
+         margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
+       );
+     }
   }
 }
 
