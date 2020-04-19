@@ -1,11 +1,11 @@
 package main
 
 import (
+	"api/app"
+	"api/controllers"
 	"fmt"
 	"net/http"
 	"os"
-	"api/app"
-	"api/controllers"
 
 	"github.com/gorilla/mux"
 )
@@ -16,12 +16,13 @@ func main() {
 
 	router.HandleFunc("/api/user/new", controllers.CreateAccount).Methods("POST")
 	router.HandleFunc("/api/user/login", controllers.Authenticate).Methods("POST")
+	router.HandleFunc("/api/user/update", controllers.UpdateAccount).Methods("POST")
 	router.HandleFunc("/api/contacts/new", controllers.CreateContact).Methods("POST")
 	router.HandleFunc("/api/me/contacts", controllers.GetContactsFor).Methods("GET") //  user/2/contacts
 
 	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
-	//router.NotFoundHandler = app.NotFoundHandler
+	router.NotFoundHandler = app.NotFoundHandler(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {

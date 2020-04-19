@@ -1,9 +1,9 @@
 package models
 
 import (
+	u "api/utils"
 	"os"
 	"strings"
-	u "api/utils"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
@@ -24,6 +24,9 @@ type Account struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Token    string `json:"token";sql:"-"`
+	Nickname string `json:"nickname"`
+	PhotoUrl string `json:"photoUrl"`
+	AboutMe  string `json:"aboutMe"`
 }
 
 //Validate incoming user details...
@@ -119,4 +122,50 @@ func GetUser(u uint) *Account {
 
 	acc.Password = ""
 	return acc
+}
+
+func (account *Account) Update(user uint) map[string]interface{} {
+
+	curAccount := GetUser(user)
+	isModify := false
+	if account.Password != "" {
+		if len(account.Password) < 6 {
+			resp := u.Message(false, "Password is required")
+			return resp
+		}
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+		curAccount.Password = string(hashedPassword)
+		isModify = true
+	}
+
+	if account.Nickname != "" {
+		curAccount.Nickname = account.Nickname
+		isModify = true
+	}
+	if account.PhotoUrl != "" {
+		curAccount.PhotoUrl = account.PhotoUrl
+		isModify = true
+	}
+	if account.AboutMe != "" {
+		curAccount.AboutMe = account.AboutMe
+		isModify = true
+	}
+
+	if isModify {
+		GetDB().Update(curAccount)
+	} else {
+		return u.Message(false, "Failed to modify account, can't update values.")
+	}
+
+	//Create new JWT token for the newly registered account
+	tk := &Token{UserId: curAccount.ID}
+	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
+	tokenString, _ := token.SignedString([]byte(os.Getenv("token_password")))
+	curAccount.Token = tokenString
+
+	curAccount.Password = "" //delete password
+
+	response := u.Message(true, "Account has been modified")
+	response["account"] = curAccount
+	return response
 }
