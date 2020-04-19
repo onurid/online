@@ -13,3 +13,5 @@ src/ileti.online/mobil/*.iml
 src/ileti.online/mobil/*.ipr
 src/ileti.online/mobil/*.iws
 src/ileti.online/mobil/.idea/
+src/kimlik.online/api/api
+src/ileti.online/api/api
