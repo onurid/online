@@ -5,25 +5,23 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['AuthenticationService', '$location'];
-    function RegisterController(AuthenticationService, $location) {
+    RegisterController.$inject = ['AuthenticationService', '$location', 'FlashService'];
+    function RegisterController(AuthenticationService, $location, FlashService) {
         var vm = this;
 
         vm.register = register;
 
         function register() {
             vm.dataLoading = true;
-            AuthenticationService.Create(vm.user)
-                .then(function (response) {
+            AuthenticationService.CreateAccount(vm.user.username, vm.user.password, function (response) {
                     if (response.success) {
-                        //FlashService.Success('Registration successful', true);
-                        alert("Kayıt başarılı");
+                        FlashService.Success('Kayıt başarılı', true);
                         $location.path('/login');
                     } else {
-                        //FlashService.Error(response.message);
-                        alert(response.message)
+                        FlashService.Error(response.message);
                         vm.dataLoading = false;
                     }
+                    vm.dataLoading = false;
                 });
         }
     }

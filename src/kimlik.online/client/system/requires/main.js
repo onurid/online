@@ -13,6 +13,7 @@ require.config({
         "angular": "requires/angular.min",
         "app" : "app",
         "authentication": "app-services/authentication.service",
+        "flashservice":"app-services/flash.service",
 
         "login":"modules/login/login.controller",
         "logout":"modules/logout/logout.controller",
@@ -28,6 +29,7 @@ require.config({
         "angular": { deps: ["jquery"], exports: "angular" },
         "app": { deps: ["angular", "angular-route", "angular-cookies", "ocLazyLoad", 'angular-notify'], exports: "app" },
         "authentication": { deps: ["app"],exports: "authentication" },
+        "flashservice": { deps:["app"], exports: "flashservice" },
         "logout": { deps: ["app", "jquery-confirm"], exports: "logout" },
         "login": { deps: ["authentication", "app"], exports: "login" },
         "register": { deps: ["authentication", "app"], exports: "register" }
@@ -45,7 +47,8 @@ require(
         "ocLazyLoad",
         "angular",
         "app",
-        "authentication"
+        "authentication",
+        "flashservice"
     ],
     function () {
         angular.bootstrap(document, ['app']);

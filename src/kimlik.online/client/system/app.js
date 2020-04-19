@@ -1,7 +1,7 @@
 
 var str = window.location.host;
 
-var baseURL = "http://" + str; //.replace("localhost", "localhost");
+var baseURL =  "http://" + str; // + str.replace("lemoras.site:8080", "api.lemoras.com");
 var adminPath = "/admin";
 var authPath = "/user";
 
@@ -176,11 +176,10 @@ var authPath = "/user";
                 templateUrl: '../../system/modules/register/register.view.html',
                 controller: 'RegisterController',
                 controllerAs: 'vm'
-            });
-             // .when('/load', ( window.location.href = './index.html' ) );
+            });  // .when('/load', ( window.location.href = './index.html' ) );
 
         $routeProviderReference = $routeProvider;
-        
+
         $ocLazyLoadProvider.config({
             'debug': false, // For debugging 'true/false'
             'events': true, // For Event 'true/false'  
@@ -191,13 +190,105 @@ var authPath = "/user";
 
     run.$inject = ['$rootScope', '$location', '$cookies', '$http', '$route', 'getjson', '$q'];
     function run($rootScope, $location, $cookies, $http, $route, getjson, $q) {
+
+        $rootScope.config = undefined;
+
+        $rootScope.navSelected = 0;
+
+        $rootScope.contentTitle = '';
+
+        $rootScope.navSelect = function (index, itemValue, xValue) {
+            $rootScope.navSelected = index;
+
+            if (xValue === undefined) {
+                $rootScope.contentTitle = itemValue;
+            }
+            else {
+                $rootScope.contentTitle = itemValue + '  >  ' + xValue;
+            };
+
+        };
+
+        $rootScope.setNav = function () {
+            $rootScope.navSelected = 0;
+            $rootScope.contentTitle = '';
+        };
+
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookies.getObject('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            document.getElementById("configDisplay").style.display = "";
+            document.getElementById("configTitle").innerHTML = "{{ config.root.titleName }}";
+            $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.globals.currentUser.authdata;
+            var result = window.localStorage.getItem("config");
+            if (result === null) {
+                window.location.replace("#!/login");
+            }
+            else {
+                var config = JSON.parse(result);
+                $rootScope.config = config;
+                setRoute(config.root.route);
+                var path = window.location.pathname.split('/')[1];
+
+                if ("templates" !== path) {
+                    var template = window.localStorage.getItem("template");
+			
+                    if ( template === null) {
+                        window.location.replace("./index.html#!/login");        
+                    }
+                    else {
+                        window.location.replace("./templates/" + template + "/index.html");
+                    }
+                }		
+            }
+            //var myDataPromise1 = getjson.getData($configUrl);  // http://localhost:5000/api/config  // bu kısım authservice ne alınacak
+            //myDataPromise1.then(function (result) {
+            //    $rootScope.Config = result;
+            //    setRoute(result.Root.Route); 
+            //});       
+        }
+
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
-            if (restrictedPage) {
+            var loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !loggedIn) {
                 $location.path('/login');
             }
         });
+
+
+        function setRoute(data) {
+
+            var j = 0, currentRoute;
+
+            var def = data.default;
+
+            var controllers = [];
+
+            for (; j < data.pages.length; j++) {
+
+                currentRoute = data.pages[j];
+
+                controllers.push('../../' + currentRoute.controllerUrl);
+
+                $routeProviderReference.when(currentRoute.routeName, {
+
+                    templateUrl: '../../' + currentRoute.templateUrl,
+                    controller: currentRoute.controllerName,
+                    controllerAs: currentRoute.controllerAsName,
+                    resolve: {
+                        loadController: ['$ocLazyLoad', function ($ocLazyLoad) {
+                            return $ocLazyLoad.load(controllers); // Resolve promise and load before view 
+                        }]
+                    }
+                });
+            };
+
+            $routeProviderReference.otherwise({ redirectTo: def });
+
+            $route.reload();
+        };
     }
 
 })();

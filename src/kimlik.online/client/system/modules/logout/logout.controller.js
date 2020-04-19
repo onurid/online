@@ -5,8 +5,8 @@
         .module('app')
         .controller('LogoutController', LogoutController);
 
-    LogoutController.$inject = ['$scope'];
-    function LogoutController($scope) {
+    LogoutController.$inject = ['$scope', 'ProfileService'];
+    function LogoutController($scope, ProfileService) {
         var vm = this;
 
         var logout = function () {
