@@ -15,7 +15,8 @@ require.config({
         "authentication": "app-services/authentication.service",
 
         "login":"modules/login/login.controller",
-        "logout":"modules/logout/logout.controller"
+        "logout":"modules/logout/logout.controller",
+        "register":"modules/register/register.controller"
     },
     shim: {
         "angular-notify": { deps:["angular"], exports: "angular-notif" },
@@ -28,14 +29,15 @@ require.config({
         "app": { deps: ["angular", "angular-route", "angular-cookies", "ocLazyLoad", 'angular-notify'], exports: "app" },
         "authentication": { deps: ["app"],exports: "authentication" },
         "logout": { deps: ["app", "jquery-confirm"], exports: "logout" },
-        "login": { deps: ["authentication", "app"], exports: "login" }
+        "login": { deps: ["authentication", "app"], exports: "login" },
+        "register": { deps: ["authentication", "app"], exports: "register" }
     },
     deps: ["app"]
 });
 
 require(
     [
-        'login', 'logout',
+        'login', 'logout', 'register',
         "jquery-confirm",
         "jquery",
         "angular-route",

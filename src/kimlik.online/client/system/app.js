@@ -172,10 +172,15 @@ var authPath = "/user";
                 controller: 'LogoutController',
                 controllerAs: 'vm'
             })
-            ;  // .when('/load', ( window.location.href = './index.html' ) );
+            .when('/register', {
+                templateUrl: '../../system/modules/register/register.view.html',
+                controller: 'RegisterController',
+                controllerAs: 'vm'
+            });
+             // .when('/load', ( window.location.href = './index.html' ) );
 
         $routeProviderReference = $routeProvider;
-
+        
         $ocLazyLoadProvider.config({
             'debug': false, // For debugging 'true/false'
             'events': true, // For Event 'true/false'  
