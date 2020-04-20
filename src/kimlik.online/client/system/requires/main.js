@@ -14,7 +14,6 @@ require.config({
         "app" : "app",
         "authentication": "app-services/authentication.service",
         "flash":"app-services/flash.service",
-        "userlocal-storage":"app-services/user.service.local-storage",
 
         "login":"modules/login/login.controller",
         "logout":"modules/logout/logout.controller",
@@ -31,7 +30,6 @@ require.config({
         "app": { deps: ["angular", "angular-route", "angular-cookies", "ocLazyLoad", 'angular-notify'], exports: "app" },
         "authentication": { deps: ["app"],exports: "authentication" },
         "flash": { deps:["app"], exports: "flash" },
-        "userlocal-storage": { deps: ["app"], exports: "userlocal-storage" },
         "logout": { deps: ["app", "jquery-confirm"], exports: "logout" },
         "login": { deps: ["authentication", "app"], exports: "login" },
         "register": { deps: ["authentication", "app"], exports: "register" }
@@ -49,7 +47,6 @@ require(
         "ocLazyLoad",
         "angular",
         "app",
-        "userlocal-storage",
         "authentication",
         "flash"
     ],
