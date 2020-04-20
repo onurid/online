@@ -1,0 +1,74 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.modulePage.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.modulePage.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitModulePage()">
+                    <div class="row">
+                      <div class="col-md-4">
+                          <div class="form-group">
+                              <Label class="bmd-Label-floating">{{ config.module.modulePage.compose.applicationModuleName }}</Label>
+                              <select class="form-control" ng-model="vm.selectedApplicationModule" ng-options="x.moduleName for x in vm.allApplicationModule track by x.id"></select>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <Label class="bmd-Label-floating">{{ Config.Module.modulePage.compose.page }}</Label>
+                          <select class="form-control" ng-model="vm.selectedPage" ng-options="x.routeName for x in vm.allPage track by x.id"></select>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">{{ config.module.modulePage.compose.btnModulePageAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">{{ config.module.modulePage.list.caption }}</h4>
+                  <p class="card-category"> {{ config.module.modulePage.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.modulePage.list.properties | orderBy : 'Index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allModuleRoute">
+                              <td>
+                                  {{ item.applicationModuleName }}
+                              </td>
+                              <td>
+                                  {{ item.routeName }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deleteModulePage(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     

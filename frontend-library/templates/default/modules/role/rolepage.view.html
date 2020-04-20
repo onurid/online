@@ -1,0 +1,74 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.rolePage.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.rolePage.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitrolePage()">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                            <Label class="bmd-Label-floating">{{ config.module.rolePage.compose.roleName }}</Label>
+                            <select class="form-control" ng-model="vm.selectedRole" ng-options="x.roleName for x in vm.allRole track by x.id"></select>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                            <Label class="bmd-Label-floating">{{ config.module.rolePage.compose.pageName }}</Label>
+                            <select class="form-control" ng-model="vm.selectedPage" ng-options="x.pageName for x in vm.allPage track by x.id"></select>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">{{ config.module.rolePage.compose.btnRolePageAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">{{ config.module.rolePage.list.caption }}</h4>
+                    <p class="card-category"> {{ config.module.rolePage.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.rolePage.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allRolePage">
+                              <td>
+                                  {{ item.roleName }}
+                              </td>
+                              <td>
+                                  {{ item.pageName }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deleterolePage(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     

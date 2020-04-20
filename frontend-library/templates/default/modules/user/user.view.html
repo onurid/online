@@ -1,0 +1,142 @@
+
+
+<style>
+    .passiveUser {
+        background: red;
+        height: 20px;
+        width: 20px;
+        border-radius: 10px;
+        text-align: center;
+        vertical-align: middle;
+        margin-left:35%;
+       
+    }
+    .activeUser {
+        background: green;
+        height: 20px;
+        width: 20px;
+        border-radius: 10px;
+        text-align: center;
+        vertical-align: middle;
+        margin-left: 35%;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">{{ config.module.user.compose.caption }}</h4>
+                    <p class="card-category">{{ config.module.user.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                    <form ng-submit="vm.submitUser()">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.username }}</Label>
+                                    <input type="text" ng-model="vm.user.username" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.passwd }}</Label>
+                                    <input type="text" ng-model="vm.user.passwd" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.email }}</Label>
+                                    <input type="text" ng-model="vm.user.email" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.firstname }}</Label>
+                                    <input type="text"  ng-model="vm.user.firstname" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.lastname }}</Label>
+                                    <input type="text"  ng-model="vm.user.lastname" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <Label class="bmd-Label-floating">{{ config.module.user.compose.active }}</Label>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input"  ng-model="vm.user.active" ng-init="vm.user.active = false" type="checkbox" value="" checked>
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" id="btnAdd" class="btn btn-primary pull-right">{{ config.module.user.compose.btnUserAdd }}</button>
+                        <button  id="btnEdit" ng-click="vm.postEditUser(item)" hidden="hidden" disabled  class="btn btn-primary pull-right">Güncelle</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">{{ config.module.user.list.caption }}</h4>
+                    <p class="card-category"> {{ config.module.user.list.label }}</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                            <th ng-repeat="item in config.module.user.list.properties | orderBy : 'index'">
+                                {{ item.name }}
+                            </th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in vm.allUser">
+                                    <td>
+                                        {{ item.username }}
+                                    </td>
+                                    <td>
+                                        {{ item.email }}
+                                    </td>
+                                    <td>
+                                        {{ item.firstname }}
+                                    </td>
+                                    <td>
+                                        {{ item.lastname }}
+                                    </td>
+                                    <td style="text-align:center; vertical-align:middle;">
+                                        <div ng-class="item.active ? 'activeUser' : 'passiveUser'"></div>
+                                    </td>
+                                    <td>
+                                        {{ item.lastLogindate == null ? '--------------------------------' : item.lastLogindate }}
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button ng-click="vm.getEditUser(item.id)" type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                        <button ng-click="vm.deleteUser(item.id)"  type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.userRole.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.userRole.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitUserRole()">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.userRole.compose.username }}</Label>
+                                  <select class="form-control" ng-model="vm.selectedUser" ng-options="x.username for x in vm.allUser track by x.id"></select>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.userRole.compose.applicationName }}</Label>
+                                  <select class="form-control" ng-change="vm.loadAllRole()" ng-model="vm.selectedApplication" ng-options="x.applicationTagName for x in vm.allCompanyApplication track by x.id"></select>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.userRole.compose.roleName }}</Label>
+                                  <select class="form-control" ng-model="vm.selectedRole" ng-options="x.roleName for x in vm.allRole track by x.id"></select>
+                              </div>
+                          </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary pull-right">{{ config.module.userRole.compose.btnUserRoleAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">{{ config.module.userRole.list.caption }}</h4>
+                    <p class="card-category"> {{ config.module.userRole.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.userRole.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allUserRole">
+                              <td>
+                                  {{ item.username }}
+                              </td>
+                              <td>
+                                  {{ item.applicationTagName }}
+                              </td>
+                              <td>
+                                  {{ item.roleName }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deleteUserRole(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     

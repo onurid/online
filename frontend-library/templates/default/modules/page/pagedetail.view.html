@@ -1,0 +1,74 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.pageDetail.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.pageDetail.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitPageDetail()">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <Label class="bmd-Label-floating">{{ config.module.pageDetail.compose.languageName }}</Label>
+                            <select class="form-control" ng-model="vm.selectedLanguage" ng-options="x.languageName for x in vm.allLanguage track by x.id"></select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <Label class="bmd-Label-floating">{{ config.module.pageDetail.compose.pageName }}</Label>
+                          <select class="form-control" ng-model="vm.selectedPage" ng-options="x.pageName for x in vm.allPage track by x.id"></select>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">{{ config.module.pageDetail.compose.btnPageDetailAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">{{ config.module.pageDetail.list.caption }}</h4>
+                    <p class="card-category"> {{ config.module.pageDetail.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.pageDetail.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allPageDetail">
+                              <td>
+                                  {{ item.languageName }}
+                              </td>
+                              <td>
+                                  {{ item.pageName }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deletePageDetail(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     

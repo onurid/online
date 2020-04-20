@@ -1,0 +1,83 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.applicationModule.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.ApplicationModule.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitApplicationModule()">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.applicationModule.compose.applicationName }}</Label>
+                                  <select class="form-control" ng-model="vm.selectedApplication" ng-options="x.applicationName for x in vm.allApplication track by x.id"></select>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.applicationModule.compose.moduleName }}</Label>
+                                  <select class="form-control" ng-model="vm.selectedModule" ng-options="x.moduleName for x in vm.allModule track by x.id"></select>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.applicationModule.compose.businessLogic }}</Label>
+                                  <select class="form-control" ng-model="vm.selectedBusinessLogic" ng-options="x.businessLogicName for x in vm.allBusinessLogic track by x.id"></select>
+                              </div>
+                          </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary pull-right">{{ config.module.applicationModule.compose.btnApplicationModuleAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">{{ config.module.applicationModule.list.caption }}</h4>
+                  <p class="card-category"> {{ config.module.applicationModule.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.applicationModule.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allApplicationModule">
+                              <td>
+                                  {{ item.applicationName }}
+                              </td>
+                              <td>
+                                  {{ item.moduleName }}
+                              </td>
+                              <td>
+                                  {{ item.businessLogicName }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deleteApplicationModule(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
