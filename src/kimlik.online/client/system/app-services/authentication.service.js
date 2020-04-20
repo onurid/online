@@ -11,12 +11,36 @@
 
         service.ExternalLogin = ExternalLogin;
         service.InternalLogin = InternalLogin;
-        //service.Login = Login;
+        service.Login = Login;
         service.CreateAccount = CreateAccount;
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
+        service.GetUserApp = GetUserApp;
+        service.GetConfig = GetConfig;
         
         return service;
+
+        function GetUserApp(callback) {
+            callback($rootScope.applications); 
+        }
+
+        function Login(username, password, applicationId, callback) {
+            getjson.postData(baseURL + '/api' + authPath + '/login', { username: username, password: password, applicationInstanceId: applicationId })
+                .then(function (res) {                    
+                    if (res.data.token === undefined || res.data.token.trim() === '') {
+                        $rootScope.applications = res.data.applications;
+                        res.data.configData = undefined;
+                        callback(res);
+                    }
+                    else {
+                        service.SetCredentials(username, password, res.data.token);
+                        service.GetConfig(function (configData) {
+                            res.data.configData = configData.data;
+                            callback(res);
+                        });
+                    }
+                });
+        }
 
         function ExternalLogin(username, password, callback) {
             getjson.postData(baseURL + '/api' + authPath + '/login', { email: username, password: password })
@@ -66,8 +90,8 @@
             $http.defaults.headers.common.Authorization = 'Bearer';
         }
 
-        function GetConfig(callback) {            
-                getjson.getData(baseURL + '/system/config.json')
+        function GetConfig(callback) {           
+                getjson.getData(baseURL + '/system/configs/' + window.location.hostname +'.json')
                     .then(function (res) {
                         callback(res);
                     });
@@ -79,7 +103,7 @@
                 .then(function (res) {                    
                     if (res.status) {
                         service.SetCredentials(username, password, res.account.token);
-                         GetConfig(function (configData) {
+                        service.GetConfig(function (configData) {
                              res.message =  configData.data;     
                              callback(res);                       
                          });

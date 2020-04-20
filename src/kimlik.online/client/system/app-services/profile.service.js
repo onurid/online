@@ -42,11 +42,10 @@
         }
 
         function Logout() {
-            notification.pushInfoNotify('Çıkış yaptınız', true);
-            //getjson.getData(logoutApiUrl).then(function (res) {
-            //    if (res.success)
-            //        notification.pushInfoNotify(res.data, true);
-            //});
+            getjson.getData(logoutApiUrl).then(function (res) {
+                if (res.success)
+                    notification.pushInfoNotify(res.data, true);
+            });
         }
     }
 

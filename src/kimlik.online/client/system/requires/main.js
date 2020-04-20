@@ -13,7 +13,8 @@ require.config({
         "angular": "requires/angular.min",
         "app" : "app",
         "authentication": "app-services/authentication.service",
-        "flashservice":"app-services/flash.service",
+        "flash":"app-services/flash.service",
+        "userlocal-storage":"app-services/user.service.local-storage",
 
         "login":"modules/login/login.controller",
         "logout":"modules/logout/logout.controller",
@@ -29,7 +30,8 @@ require.config({
         "angular": { deps: ["jquery"], exports: "angular" },
         "app": { deps: ["angular", "angular-route", "angular-cookies", "ocLazyLoad", 'angular-notify'], exports: "app" },
         "authentication": { deps: ["app"],exports: "authentication" },
-        "flashservice": { deps:["app"], exports: "flashservice" },
+        "flash": { deps:["app"], exports: "flash" },
+        "userlocal-storage": { deps: ["app"], exports: "userlocal-storage" },
         "logout": { deps: ["app", "jquery-confirm"], exports: "logout" },
         "login": { deps: ["authentication", "app"], exports: "login" },
         "register": { deps: ["authentication", "app"], exports: "register" }
@@ -47,8 +49,9 @@ require(
         "ocLazyLoad",
         "angular",
         "app",
+        "userlocal-storage",
         "authentication",
-        "flashservice"
+        "flash"
     ],
     function () {
         angular.bootstrap(document, ['app']);

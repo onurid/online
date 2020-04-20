@@ -85,11 +85,31 @@ html { height: 100%;  }
                     </div>
 
                 </form>
-
-            </div>
-
-            <div class="copy-text"> Powered <i class="fa fa-heart"></i> by <a href="http://lemoras.com">Lemoras</a> ,  <a href="#!/register">Kayıt ol</a>  </div>
+           
+                <a href="#!/register" style="position:relative; width: 100%; height: 10%; border-radius: 40px;  top: 10px;" class="btn btn-login">Kayıt ol</a>
+           
         </div>
+
+        <div  id="loginForm" style="display:none;">
+            <h2 class="text-center text-primary">Uygulama Seç</h2>
+
+            <form name="form2" ng-submit="vm.login()" role="form" class="login-form">
+
+                <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+                    <label style="margin-top: -10px;" for="username">Uygulama</label>
+                    <select class="form-control" ng-model="vm.selectedApplication" ng-options="x.applicationName for x in vm.allApplication track by x.id"></select>
+                </div>
+
+                <div class="form-check">
+                        <a href="javascript:location.reload();" class="btn btn-link float-left">Geri</a>
+                    <button type="submit" class="btn btn-primary float-right">Aç</button>
+                </div>
+
+            </form>
+        </div>
+<br>
+                <div class="copy-text"> Powered <i class="fa fa-heart"></i> by <a href="http://lemoras.com">Lemoras</a> </div>
+    </div>
 
 </div>
         </div>

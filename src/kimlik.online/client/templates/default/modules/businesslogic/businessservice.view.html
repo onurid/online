@@ -1,0 +1,77 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">{{ config.module.businessService.compose.caption }}</h4>
+                    <p class="card-category">{{ config.module.businessService.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitbusinessService()">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.businessService.compose.businessServiceName }}</Label>
+                                  <input type="text" ng-model="vm.businessService.businessServiceName" class="form-control" required>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="form-group">
+                                  <Label class="bmd-Label-floating">{{ config.module.businessService.compose.businessServiceKey }}</Label>
+                                  <input type="text" ng-model="vm.businessService.serviceKey" class="form-control" required>
+                              </div>
+                          </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary pull-right">{{ config.module.businessService.compose.btnBusinessServiceAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title ">{{ config.module.businessService.list.caption }}</h4>
+                    <p class="card-category"> {{ config.module.businessService.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.businessService.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="item in vm.allBusinessService">
+                              <td>
+                                  {{ item.id }}
+                              </td>
+                              <td>
+                                  {{ item.businessServiceName }}
+                              </td>
+                              <td>
+                                  {{ item.businessServiceKey }}
+                              </td>
+                              <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                      <i class="material-icons">edit</i>
+                                  </button>
+                                  <button ng-click="vm.deletebusinessService(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                      <i class="material-icons">close</i>
+                                  </button>
+                              </td>
+                          </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     

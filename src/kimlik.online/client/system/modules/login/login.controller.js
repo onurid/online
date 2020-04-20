@@ -5,12 +5,17 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['AuthenticationService', 'FlashService'];
-    function LoginController(AuthenticationService, FlashService) {
+    LoginController.$inject = ['$location','AuthenticationService', 'FlashService'];
+    function LoginController($location, AuthenticationService, FlashService) {
         var vm = this;
 
         vm.login = login;
         vm.returnParam = null;
+        vm.typeParam = null;
+
+        vm.selectedApplication = null;
+
+        vm.allApplication = [];
 
         (function initController() {
             // reset login status
@@ -18,6 +23,7 @@
 
             var urlParams = new URLSearchParams(window.location.search);
             vm.returnParam = urlParams.get('return');
+            vm.typeParam = urlParams.get('type');
             
         })();
         
@@ -40,21 +46,47 @@
                 vm.dataLoading = false; 
             } 
             else {
-
-            AuthenticationService.InternalLogin(vm.username, vm.password, function (response) {
-                if (response.status) {
-                    FlashService.WriteLocal(true, response.message);
-                    var template = window.localStorage.getItem("template");
-                    window.location.href = '../../templates/' + template + '/index.html';  //$location.path('/load');
-                } else {
-                    FlashService.Error(response.message, '/');
+                if (vm.typeParam == null) {
+                AuthenticationService.InternalLogin(vm.username, vm.password, function (response) {
+                    if (response.status) {
+                        FlashService.WriteLocal(true, response.message);
+                        var template = window.localStorage.getItem("template");
+                        window.location.href = '../../templates/' + template + '/index.html';  //$location.path('/load');
+                    } else {
+                        FlashService.Error(response.message, '/');
+                        vm.dataLoading = false;
+                    }
                     vm.dataLoading = false;
-                }
-                vm.dataLoading = false;
-            });
+                });
+            }
+            else {
+                AuthenticationService.Login(vm.username, vm.password, applicationId, function (response) {
+                    if (response.success) {
+                        if (response.data.configData === undefined) {
+                            document.getElementById("preLoginForm").style.display = "none";
+                            document.getElementById("loginForm").style.display = "";
+                            loadAllApplication();
+                        }
+                        else {
+                            FlashService.WriteLocal(false, response.data.configData);
+                            var template = window.localStorage.getItem("template");
+                            window.location.href = '../../templates/' + template + '/index.html';  //$location.path('/load');
+                        }
+                    } else {
+                        FlashService.Error(response.data.message, $location);
+                        vm.dataLoading = false;
+                    }
+                });
+            }
             vm.dataLoading = false;
         }            
         };
+
+        function loadAllApplication() {
+            AuthenticationService.GetUserApp(function (response) {
+                vm.allApplication = response;
+            });
+        }
     }
 
 })();

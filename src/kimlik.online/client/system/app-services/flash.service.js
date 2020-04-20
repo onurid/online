@@ -42,7 +42,7 @@
             }
             window.localStorage.setItem("config", str);
 	    
-	        window.localStorage.setItem("app", "zoe.js");
+	        window.localStorage.setItem("app", configData.appJS); 
             window.localStorage.setItem("template", configData.template);
         }
 

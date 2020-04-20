@@ -1,0 +1,81 @@
+
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{ config.module.applicationType.compose.caption }}</h4>
+                  <p class="card-category">{{ config.module.ApplicationType.compose.label }}</p>
+                </div>
+                <div class="card-body">
+                  <form ng-submit="vm.submitApplicationType()">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <Label class="bmd-Label-floating">{{ config.module.applicationType.compose.applicationTypeName }}</Label>
+                          <input type="text"  ng-model="vm.applicationType.applicationTypeName" class="form-control" required>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <Label class="bmd-Label-floating">{{ config.module.applicationType.compose.isBackoffice }}</Label>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                  <input  ng-model="vm.applicationType.isBackOffice" ng-init="vm.applicationType.isBackOffice = false" class="form-check-input" type="checkbox" value="" checked>
+                                  <span class="form-check-sign">
+                                      <span class="check"></span>
+                                  </span>
+                              </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">{{ config.module.applicationType.compose.btnApplicationTypeAdd }}</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">{{ config.module.applicationType.list.caption }}</h4>
+                  <p class="card-category"> {{ config.module.applicationType.list.label }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th ng-repeat="item in config.module.applicationType.list.properties | orderBy : 'index'">
+                          {{ item.name }}
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="item in vm.allApplicationType">
+                          <td>
+                            {{ item.applicationTypeName }}
+                          </td>
+                          <td>
+                              {{ item.isBackOffice }}
+                          </td>     
+                          <td class="td-actions text-right">
+                              <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
+                                  <i class="material-icons">edit</i>
+                              </button>
+                              <button ng-click="vm.deleteApplicationType(item.id)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                                  <i class="material-icons">close</i>
+                              </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     
