@@ -39,7 +39,7 @@ var authPath = "/user";
                     pushNotify("Hata!", message, 'alert alert-danger');
             };
 
-            var pushSuccessNotify = function (message) {
+            var pushSuccessNotify = function (message, isLogin = false) {
                 pushNotify("Sonuç!", message, 'alert alert-success');
             };
 
@@ -67,19 +67,9 @@ var authPath = "/user";
                 $http.defaults.headers.common['Authorization'] = window.localStorage.getItem("authorization");
                 return $http.get(url).
                     then(function (response) {
-                        if (response.data.success)
-                            return response.data;
-                        else {
-                            notification.pushWarningNotify(response.data.data.message, isLogin);
-                            return response.data;
-                        }
+                        return httpResponse(response);
                     }, function (response) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        notification.pushDangerNotify(response.data, isLogin);
-                        return {
-                            success: false, data: { message: "hata" }
-                        };
+                        return httpError(response);
                     }).catch(function (error) { angular.noop; });
             };
 
@@ -90,25 +80,9 @@ var authPath = "/user";
                 $http.defaults.headers.common['Authorization'] = window.localStorage.getItem("authorization");
                 return $http.post(url, data).
                     then(function (response) {
-                        if (response.data.success) {
-                            return response.data;
-                        }
-                        else {
-                            if (isLogin) {
-                                notification.pushWarningNotify(response.data.message, isLogin);
-                            } else {
-                                notification.pushWarningNotify(response.data.data.message, isLogin);
-                            }
-                            return response.data;
-                        }
+                        return httpResponse(response, isLogin);
                     }, function (response) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        
-                        notification.pushDangerNotify(response.data, isLogin);
-                        return {
-                            success: false, data: { message: "hata" }
-                        };
+                        return httpError(response, isLogin);
                     }).catch(function (error) { angular.noop; });
             };
 
@@ -116,20 +90,9 @@ var authPath = "/user";
                 $http.defaults.headers.common['Authorization'] = window.localStorage.getItem("authorization");
                 return $http.put(url, data).
                     then(function (response) {
-                        if (response.data.success) {
-                            return response.data;
-                        }
-                        else {
-                            notification.pushWarningNotify(response.data.data.message);
-                            return response.data;
-                        }
+                        return httpResponse(response);
                     }, function (response) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        notification.pushDangerNotify(response.data);
-                        return {
-                            success: false, data: { message: "hata" }
-                        };
+                        return httpError(response);
                     }).catch(function (error) { angular.noop; });
             };
 
@@ -137,21 +100,33 @@ var authPath = "/user";
                 $http.defaults.headers.common['Authorization'] = window.localStorage.getItem("authorization");
                 return $http.delete(url).
                     then(function (response) {
-                        if (response.data.success) {
-                            return response.data;
-                        }
-                        else {
-                            notification.pushWarningNotify(response.data.data.message);
-                            return response.data;
-                        }
+                        return httpResponse(response);
                     }, function (response) {
-                        // called asynchronously if an error occurs
-                        // or server returns response with an error status.
-                        notification.pushDangerNotify(response.data);
-                        return {
-                            success: false, data: { message: "hata" }
-                        };
+                        return httpError(response);
                     }).catch(function (error) { angular.noop; });
+            };
+
+            var httpResponse = function(response, isLogin = false) {
+                if (response.status == 200) {
+                    if (response.data.hasOwnProperty("status")
+                        && response.data.hasOwnProperty("message")) {
+                        if (!response.data.status) {
+                            notification.pushWarningNotify(response.data.message, isLogin);
+                        }
+                    }
+                    return response.data;                                        
+                }
+                else {
+                    notification.pushWarningNotify(response.data, isLogin);
+                    return response.data;
+                }
+            };
+
+            var httpError = function(response, isLogin = false) {                      
+                notification.pushDangerNotify(response.statusText, isLogin);
+                return {
+                    status: false, message: "hata"
+                };
             };
 
             return { getData: getData, postData: postData, putData: putData, deleteData: deleteData };

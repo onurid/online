@@ -147,10 +147,11 @@ func (account *Account) Update(user uint) map[string]interface{} {
 			resp := u.Message(false, "Password is required")
 			return resp
 		}
-		if account.Password != s[0] {
-			resp := u.Message(false, "Current Password is not valid")
-			return resp
+		err := bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(s[0]))
+		if err != nil && err == bcrypt.ErrMismatchedHashAndPassword { //Password does not match!
+			return u.Message(false, "Current Password is not valid")
 		}
+
 		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(s[1]), bcrypt.DefaultCost)
 		curAccount.Password = string(hashedPassword)
 		isModify = true
@@ -170,7 +171,7 @@ func (account *Account) Update(user uint) map[string]interface{} {
 	}
 
 	if isModify {
-		GetDB().Update(curAccount)
+		GetDB().Save(curAccount)
 	} else {
 		return u.Message(false, "Failed to modify account, can't update values.")
 	}

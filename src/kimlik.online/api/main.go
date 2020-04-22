@@ -20,7 +20,7 @@ func main() {
 	router.HandleFunc("/api/token/valid", controllers.ValidToken).Methods("GET")
 	router.HandleFunc("/api/contacts/new", controllers.CreateContact).Methods("POST")
 	router.HandleFunc("/api/me/contacts", controllers.GetContactsFor).Methods("GET") //  user/2/contacts
-	router.HandleFunc("/api/me", controllers.GetAccount).Methods("GET")
+	router.HandleFunc("/api/user/me", controllers.GetAccount).Methods("GET")
 
 	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 
