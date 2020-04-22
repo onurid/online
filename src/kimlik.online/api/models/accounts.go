@@ -129,11 +129,20 @@ func (account *Account) Update(user uint) map[string]interface{} {
 	curAccount := GetUser(user)
 	isModify := false
 	if account.Password != "" {
+		s := strings.Split(account.Password, "")
+		if len(s) != 2 {
+			resp := u.Message(false, "Password error")
+			return resp
+		}
 		if len(account.Password) < 6 {
 			resp := u.Message(false, "Password is required")
 			return resp
 		}
-		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(account.Password), bcrypt.DefaultCost)
+		if account.Password != s[0] {
+			resp := u.Message(false, "Current Password is not valid")
+			return resp
+		}
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(s[1]), bcrypt.DefaultCost)
 		curAccount.Password = string(hashedPassword)
 		isModify = true
 	}
