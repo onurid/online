@@ -5,8 +5,8 @@
         .module('app')
         .factory('ProfileService', ProfileService);
     
-    var profileApiUrl = baseURL + '/api' + authPath + '/myprofile';
-    var zoeApiUrl = baseURL + '/api' + authPath + '/zoe';
+    var updateUrl = baseURL + '/api' + authPath + '/update';
+    var getUrl = baseURL + '/api/me';
     var logoutApiUrl = baseURL + '/api' + authPath + '/logout';
 
     ProfileService.$inject = ['getjson', 'notification'];
@@ -22,29 +22,31 @@
         return service;
 
         function Put(user) {
-            getjson.putData(profileApiUrl, user).then(function (res) {
-                if (res.success)
-                    notification.pushSuccessNotify(res.data);
+            getjson.putData(updateUrl, user).then(function (res) {
+                if (res.status)
+                    notification.pushSuccessNotify(res.message);
             });
         }
 
         function Zoe(zoe) {
-            getjson.putData(zoeApiUrl, zoe).then(function (res) {
-                if (res.success)
-                    notification.pushSuccessNotify(res.data);
+            var data = new { password = zoe.currentPasswd + "#change-password#" + zoe.passwd };
+            getjson.putData(updateUrl, data).then(function (res) {
+                if (res.status)
+                    notification.pushSuccessNotify(res.message);
             });
         }
 
         function Get(callback) {
-            getjson.getData(profileApiUrl).then(function (res) {
-                callback(res.data);
+            getjson.getData(getUrl).then(function (res) {
+                if (res.status)
+                    callback(res.account);
             });            
         }
 
         function Logout() {
             getjson.getData(logoutApiUrl).then(function (res) {
-                if (res.success)
-                    notification.pushInfoNotify(res.data, true);
+                if (res.status)
+                    notification.pushInfoNotify(res.message, true);
             });
         }
     }

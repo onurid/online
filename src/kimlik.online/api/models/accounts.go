@@ -124,12 +124,21 @@ func GetUser(u uint) *Account {
 	return acc
 }
 
+func GetAccount(uid uint) map[string]interface{} {
+
+	account := GetUser(uid)
+
+	response := u.Message(true, "Account found it")
+	response["account"] = account
+	return response
+}
+
 func (account *Account) Update(user uint) map[string]interface{} {
 
 	curAccount := GetUser(user)
 	isModify := false
 	if account.Password != "" {
-		s := strings.Split(account.Password, "")
+		s := strings.Split(account.Password, "#change-password#")
 		if len(s) != 2 {
 			resp := u.Message(false, "Password error")
 			return resp

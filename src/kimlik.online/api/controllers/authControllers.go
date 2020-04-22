@@ -46,6 +46,13 @@ var UpdateAccount = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
+var GetAccount = func(w http.ResponseWriter, r *http.Request) {
+
+	id := r.Context().Value("user").(uint)
+	resp := models.GetAccount(id) //Get account
+	u.Respond(w, resp)
+}
+
 var ValidToken = func(w http.ResponseWriter, r *http.Request) {
 
 	u.Respond(w, u.Message(true, "Token is valid"))
