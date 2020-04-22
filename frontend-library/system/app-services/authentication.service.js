@@ -107,6 +107,8 @@
                              res.message =  configData.data;     
                              callback(res);                       
                          });
+                    }else {
+                        callback(res); 
                     }
                 });
                 
