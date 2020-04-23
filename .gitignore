@@ -1,17 +1,2 @@
-src/ileti.online/mobil/.DS_Store
-src/ileti.online/mobil/.dart_tool/
-
-src/ileti.online/mobil/.packages
-src/ileti.online/mobil/.pub/
-
-src/ileti.online/mobil/build/
-
-src/ileti.online/mobil/.flutter-plugins
-
-# IntelliJ related
-src/ileti.online/mobil/*.iml
-src/ileti.online/mobil/*.ipr
-src/ileti.online/mobil/*.iws
-src/ileti.online/mobil/.idea/
-src/kimlik.online/api/api
-src/ileti.online/api/api
+src/kimlik.online/
+src/ileti.online/
