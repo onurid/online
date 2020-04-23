@@ -1,4 +1,1 @@
-cd src
-./clone.sh
-cd ..
-sudo docker-compose up -d
+docker-compose -f docker-compose.yml -f src/kimlik.online/docker-compose.yml up -d public.gateway.reverseproxy
